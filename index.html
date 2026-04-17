@@ -210,17 +210,9 @@ html, body {
     rotate(calc(-1 * var(--angle)));
 }
 
-.icon-link:hover img {
-  transform: translate(-50%, -50%) scale(1.35);
-  filter:
-    drop-shadow(0 0 10px rgba(0,255,255,0.8))
-    drop-shadow(0 0 25px rgba(0,255,200,0.6));
-}
-
-/* Make links clickable but no underline */
-.icon-link {
-  text-decoration: none;
-}
+.icon-link img {
+  width: 22px;
+  height: 22px;
 
 /* Responsive tweak */
 @media (max-width: 600px) {

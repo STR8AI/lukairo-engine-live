@@ -197,30 +197,6 @@ html, body {
   from { transform: rotate(0deg);   }
   to   { transform: rotate(360deg); }
 }
-
-/* Icon link wrapper – rotates with orbit, pointer enabled */
-.icon-link {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 1px;
-  height: 1px;
-  transform-origin: 0 0;
-  pointer-events: auto;
-}
-
-/* Actual icon image */
-.icon-link img {
-  width: 32px;
-  height: 32px;
-  object-fit: contain;
-  transform: translate(-50%, -50%);
-  filter:
-    drop-shadow(0 0 6px rgba(0,255,255,0.4))
-    drop-shadow(0 0 16px rgba(0,255,200,0.35));
-  transition: transform 0.2s ease, filter 0.2s ease;
-}
-
 /* Radius per orbit */
 .orbit-inner  .icon-link { --radius: 54%; }
 .orbit-middle .icon-link { --radius: 70%; }

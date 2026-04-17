@@ -8,9 +8,6 @@ if (!canvas) {
   const ctx = canvas.getContext('2d');
 
   function resize() {
-    // Set canvas size to match its CSS dimensions
-    // Note: getBoundingClientRect triggers layout, but resize events
-    // are already throttled by the browser, so debouncing is not critical
     const rect = canvas.getBoundingClientRect();
     canvas.width = rect.width;
     canvas.height = rect.height;
@@ -34,10 +31,8 @@ if (!canvas) {
     ctx.lineWidth = 3;
     ctx.stroke();
 
-    // Rotating latitude lines
     for (let i = -3; i <= 3; i++) {
       ctx.beginPath();
-      // Ensure radiusY is always positive (0 or greater)
       const radiusY = Math.max(0, radius * Math.cos(angle + i * 0.4));
       ctx.ellipse(x, y, radius, radiusY, 0, 0, Math.PI * 2);
       ctx.stroke();
@@ -47,10 +42,8 @@ if (!canvas) {
     requestAnimationFrame(drawGlobe);
   }
 
-  // Mark canvas as loaded on first successful render
   try {
     drawGlobe();
-    // Mark the parent wrapper to control CSS fallback visibility
     const wrapper = canvas.closest('.globe-wrapper');
     if (wrapper) {
       wrapper.classList.add('canvas-active');

@@ -29,19 +29,21 @@
   <div id="root"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
-  <script src="./neural-core.js"></script>
+  <script src="./src/scripts/neural-core.js"></script>
   <script>
     (function () {
+      const loadingOverlay = document.getElementById("loading-overlay");
+      const fallback = document.getElementById("fallback-message");
+
+      if (loadingOverlay) {
+        loadingOverlay.style.display = "flex";
+      }
+
       if (window.NeuralCore && window.THREE) {
         const neuralCore = new window.NeuralCore({
           containerId: "neural-core-container",
           texturePath: "./images/"
         });
-
-        const loadingOverlay = document.getElementById("loading-overlay");
-        if (loadingOverlay) {
-          loadingOverlay.style.display = "flex";
-        }
 
         neuralCore.init();
         window.lukairoCoreInstance = neuralCore;
@@ -50,10 +52,12 @@
           if (loadingOverlay) {
             loadingOverlay.style.display = "none";
           }
-        }, 1200);
+        }, 1500);
       } else {
         console.error("NeuralCore failed to load");
-        const fallback = document.getElementById("fallback-message");
+        if (loadingOverlay) {
+          loadingOverlay.style.display = "none";
+        }
         if (fallback) {
           fallback.classList.add("active");
         }

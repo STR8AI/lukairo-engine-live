@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="LUKAIRO Engine - Neural Core Visualization and AI Platform">
   <title>LUKAIRO Engine</title>
-  <link rel="stylesheet" href="/src/styles/lukairo-loader.css">
+
+  <link rel="stylesheet" href="./style.css">
+
   <style>
     body {
       margin: 0;
@@ -34,7 +36,6 @@
       display: block;
     }
 
-    /* Neural Core Container Styles */
     #neural-core-container {
       width: 100vw;
       height: 100vh;
@@ -133,7 +134,6 @@
   </style>
 </head>
 <body>
-  <!-- Loader (shows first, auto-hides after 7.5s) -->
   <div class="lk-loader" id="lukairo-loader">
     <div class="lk-core-container">
       <div class="lk-core-layer lk-globe"></div>
@@ -141,88 +141,68 @@
       <div class="lk-core-layer lk-gears"></div>
       <div class="lk-central-node"></div>
     </div>
-    
+
     <div class="lk-progress-section">
       <div class="lk-brand">LUKAIRO</div>
       <div class="lk-tagline">Neural Core Engine</div>
-      
+
       <div class="lk-progress-bar-container">
         <div class="lk-progress-bar"></div>
       </div>
-      
+
       <div class="lk-status"></div>
     </div>
   </div>
-  
-  <!-- Neural Core Visualization (loads after loader) -->
+
   <section id="lukairo-engine">
     <div id="neural-core-container" role="main" aria-label="LUKAIRO Neural Core Visualization">
-      <!-- Loading Overlay -->
       <div class="neural-core-loading" id="loading-overlay">
         <div class="loading-spinner"></div>
       </div>
 
-      <!-- WebGL Fallback Message -->
       <div class="neural-core-fallback" id="fallback-message">
         <h2>WebGL Not Available</h2>
         <p>Your browser doesn't support WebGL or it's disabled.</p>
         <p>Please enable WebGL to view the Neural Core visualization.</p>
       </div>
 
-      <!-- Info Display -->
       <div class="neural-core-info">
         LUKAIRO Neural Core • 3D Visualization
       </div>
     </div>
   </section>
 
-  <!-- React Root (for the main application) -->
   <div id="root"></div>
 
-  <!-- Three.js Library -->
   <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
-  
-  <!-- Neural Core Initialization -->
-  <script src="/src/scripts/neural-core.js"></script>
-  
-  <!-- Initialization Script -->
+  <script src="./neural-core.js"></script>
+
   <script>
     (function() {
       'use strict';
 
-      // Wait for loader to complete (add small buffer for smooth transition)
       setTimeout(() => {
-        // Initialize Neural Core
         if (window.NeuralCore && window.THREE) {
           const neuralCore = new window.NeuralCore({
             containerId: 'neural-core-container',
-            texturePath: '/assets/textures/'
+            texturePath: './images/'
           });
-          
-          // Show Neural Core section
+
           const engineSection = document.getElementById('lukairo-engine');
           if (engineSection) {
             engineSection.classList.add('active');
           }
-          
-          // Initialize the visualization
+
           neuralCore.init();
-          
-          // Store reference for cleanup if needed
           window.lukairoCoreInstance = neuralCore;
         } else {
           console.warn('Three.js or NeuralCore not loaded');
-          // Fallback to showing the React app
           const root = document.getElementById('root');
           if (root) {
             root.classList.add('active');
           }
         }
-      }, 7600); // Loader duration (7.5s) + 100ms buffer for smooth transition
-
-      // Optional: Load React application after Neural Core
-      // Uncomment the line below if you want to load the React app as well
-      // <script type="module" src="/src/entry.client.tsx"></script>
+      }, 7600);
     })();
   </script>
 </body>

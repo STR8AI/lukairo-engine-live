@@ -209,10 +209,11 @@ html, body {
     translateY(calc(-1 * var(--radius)))
     rotate(calc(-1 * var(--angle)));
 }
-
 .icon-link img {
-  width: 22px;
-  height: 22px;
+  filter:
+    drop-shadow(0 0 4px rgba(0,255,255,0.3))
+    drop-shadow(0 0 10px rgba(0,255,200,0.2));
+}
 
 /* Responsive tweak */
 @media (max-width: 600px) {

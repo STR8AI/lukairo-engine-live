@@ -1,4 +1,6 @@
-/* --- LUKAIRO Neural Core polish for current index.html --- */
+/* =========================
+   LUKAIRO CORE THEME
+========================= */
 
 :root {
   --lk-bg: #090c11;
@@ -7,24 +9,46 @@
   --lk-accent: #6CEAD9;
 }
 
-/* page */
-html, body {
+/* =========================
+   RESET / BASE
+========================= */
+
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  background: var(--lk-bg);
-  color: var(--lk-text);
-  overflow: hidden;
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
-#lukairo-engine,
-#neural-core-container {
+html, body {
+  width: 100%;
+  height: 100%;
+  background: var(--lk-bg);
+  color: var(--lk-text);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  overflow: hidden;
+}
+
+/* =========================
+   LAYOUT
+========================= */
+
+#lukairo-engine {
   width: 100vw;
   height: 100vh;
   position: relative;
 }
 
-/* make the canvas fill cleanly */
+#neural-core-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* =========================
+   CANVAS
+========================= */
+
 #neural-core-container canvas,
 canvas {
   display: block;
@@ -32,7 +56,10 @@ canvas {
   height: 100%;
 }
 
-/* subtle vignette / cinematic finish */
+/* =========================
+   CINEMATIC VIGNETTE
+========================= */
+
 #neural-core-container::before {
   content: "";
   position: absolute;
@@ -40,10 +67,18 @@ canvas {
   pointer-events: none;
   z-index: 5;
   background:
-    radial-gradient(circle at 50% 50%, transparent 35%, rgba(9,12,17,0.08) 62%, rgba(9,12,17,0.28) 100%);
+    radial-gradient(
+      circle at 50% 50%,
+      transparent 35%,
+      rgba(9,12,17,0.08) 65%,
+      rgba(9,12,17,0.32) 100%
+    );
 }
 
-/* info label */
+/* =========================
+   INFO LABEL
+========================= */
+
 .neural-core-info {
   position: absolute;
   bottom: 1.25rem;
@@ -51,16 +86,19 @@ canvas {
   transform: translateX(-50%);
   text-align: center;
   color: var(--lk-muted);
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.18em;
-  pointer-events: none;
   opacity: 0.7;
+  pointer-events: none;
   z-index: 50;
   white-space: nowrap;
 }
 
-/* loading overlay */
+/* =========================
+   LOADING OVERLAY
+========================= */
+
 .neural-core-loading {
   position: absolute;
   inset: 0;
@@ -68,41 +106,53 @@ canvas {
   align-items: center;
   justify-content: center;
   background:
-    radial-gradient(circle at 50% 50%, rgba(17,22,28,0.55), rgba(9,12,17,0.92));
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(17,22,28,0.6),
+      rgba(9,12,17,0.95)
+    );
   z-index: 20;
 }
 
+/* Spinner */
 .loading-spinner {
   width: 54px;
   height: 54px;
-  border: 3px solid rgba(108, 234, 217, 0.22);
+  border: 3px solid rgba(108, 234, 217, 0.25);
   border-top-color: var(--lk-accent);
   border-radius: 50%;
-  box-shadow: 0 0 24px rgba(108, 234, 217, 0.18);
+  box-shadow:
+    0 0 20px rgba(108, 234, 217, 0.25),
+    0 0 60px rgba(108, 234, 217, 0.1);
   animation: lk-spin 1s linear infinite;
 }
 
 @keyframes lk-spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-/* fallback */
+/* =========================
+   FALLBACK PANEL
+========================= */
+
 .neural-core-fallback {
   display: none;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  text-align: center;
   padding: 1.5rem;
-  background: rgba(17, 22, 28, 0.88);
-  border: 1px solid rgba(108, 234, 217, 0.18);
-  border-radius: 14px;
   max-width: 420px;
-  z-index: 100;
+  text-align: center;
+  border-radius: 14px;
+  background: rgba(17, 22, 28, 0.9);
+  border: 1px solid rgba(108, 234, 217, 0.2);
   box-shadow:
-    0 12px 40px rgba(0,0,0,0.35),
+    0 12px 40px rgba(0,0,0,0.4),
     0 0 40px rgba(108, 234, 217, 0.08);
+  z-index: 100;
 }
 
 .neural-core-fallback.active {
@@ -111,20 +161,38 @@ canvas {
 
 .neural-core-fallback h2 {
   color: var(--lk-accent);
-  margin: 0 0 0.8rem;
-  font-size: 1.35rem;
+  margin-bottom: 0.8rem;
+  font-size: 1.3rem;
 }
 
 .neural-core-fallback p {
   color: var(--lk-muted);
+  font-size: 0.95rem;
   line-height: 1.6;
-  margin: 0.35rem 0;
 }
 
-/* mobile */
+/* =========================
+   SUBTLE GLOW (GLOBAL)
+========================= */
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at center, rgba(0,255,200,0.06), transparent 70%);
+  z-index: 0;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
 @media (max-width: 640px) {
+
   .neural-core-info {
-    font-size: 0.68rem;
+    font-size: 0.65rem;
     bottom: 0.9rem;
     letter-spacing: 0.12em;
   }
@@ -132,6 +200,11 @@ canvas {
   .neural-core-fallback {
     width: calc(100vw - 32px);
     max-width: none;
-    padding: 1.1rem;
+    padding: 1.2rem;
+  }
+
+  .loading-spinner {
+    width: 42px;
+    height: 42px;
   }
 }

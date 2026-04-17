@@ -1,70 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LUKAIRO Engine</title>
-
-  <!-- FIXED CSS PATH -->
-  <link rel="stylesheet" href="./style.css">
-
+  <link rel="stylesheet" href="./style.css" />
   <style>
     body {
       margin: 0;
-      padding: 0;
       background: #090c11;
       color: #E8EAED;
-      font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
     }
 
-    #lukairo-engine {
+    .site-header {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 10;
+    }
+
+    .site-header h1 {
+      margin: 0;
+      color: #6CEAD9;
+      font-size: 3rem;
+      line-height: 1;
+    }
+
+    .site-header p {
+      margin: 8px 0 0;
+      color: #6CEAD9;
+      font-size: 1.5rem;
+    }
+
+    #scene {
+      display: block;
       width: 100vw;
       height: 100vh;
-    }
-
-    #neural-core-container {
-      width: 100%;
-      height: 100%;
+      background: #090c11;
     }
   </style>
 </head>
-
 <body>
+  <div class="site-header">
+    <h1>LUKAIRO</h1>
+    <p>Neural Core Engine</p>
+  </div>
 
-<!-- SIMPLE HEADER (so you see something immediately) -->
-<div style="position:absolute; top:20px; left:20px; z-index:100; color:#6CEAD9;">
-  <h1 style="margin:0;">LUKAIRO</h1>
-  <p style="margin:0;">Neural Core Engine</p>
-</div>
+  <canvas id="scene"></canvas>
 
-<section id="lukairo-engine">
-  <div id="neural-core-container"></div>
-</section>
-
-<!-- Three.js -->
-<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
-
-<script>
-(function () {
-  setTimeout(() => {
-    const container = document.getElementById("neural-core-container");
-
-    // SIMPLE TEST VISUAL
-    container.innerHTML = `
-      <div style="
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        height:100%;
-        font-size:24px;
-        color:#6CEAD9;
-      ">
-        ⚡ LUKAIRO CORE LOADING ⚡
-      </div>
-    `;
-  }, 1000);
-})();
-</script>
-
+  <script type="module" src="./engine.js"></script>
 </body>
 </html>

@@ -44,22 +44,24 @@
 <!-- Three.js -->
 <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
 
-<!-- FIXED JS PATH -->
-<script src="./engine.js"></script>
-
 <script>
 (function () {
   setTimeout(() => {
-    if (window.NeuralCore && window.THREE) {
-      const core = new window.NeuralCore({
-        containerId: "neural-core-container",
-        texturePath: "./images/"   // ✅ FIXED
-      });
+    const container = document.getElementById("neural-core-container");
 
-      core.init();
-    } else {
-      console.log("NeuralCore failed to load");
-    }
+    // SIMPLE TEST VISUAL
+    container.innerHTML = `
+      <div style="
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        height:100%;
+        font-size:24px;
+        color:#6CEAD9;
+      ">
+        ⚡ LUKAIRO CORE LOADING ⚡
+      </div>
+    `;
   }, 1000);
 })();
 </script>

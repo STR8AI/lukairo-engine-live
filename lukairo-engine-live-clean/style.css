@@ -1,8 +1,9 @@
 :root {
-  --lk-bg: #090c11;
-  --lk-text: #E8EAED;
-  --lk-muted: #9AA0A6;
-  --lk-accent: #6CEAD9;
+  --bg: #090c11;
+  --text: #e8eaed;
+  --muted: #9aa0a6;
+  --accent: #6cead9;
+  --globe-size: 420px;
 }
 
 * {
@@ -11,163 +12,155 @@
 
 html,
 body {
-  width: 100%;
-  height: 100%;
   margin: 0;
   padding: 0;
-  background: var(--lk-bg);
-  color: var(--lk-text);
+  width: 100%;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--text);
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
   overflow: hidden;
 }
 
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(circle at center, rgba(0, 255, 200, 0.06), transparent 70%);
-  z-index: 0;
-}
-
-#root {
-  display: none;
-}
-
-#lukairo-engine {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-}
-
-#neural-core-container {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  overflow: hidden;
-}
-
-#neural-core-container canvas,
-canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-#neural-core-container::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 5;
+body {
   background:
-    radial-gradient(
-      circle at 50% 50%,
-      transparent 35%,
-      rgba(9, 12, 17, 0.08) 65%,
-      rgba(9, 12, 17, 0.32) 100%
-    );
+    radial-gradient(circle at 50% 20%, rgba(108, 234, 217, 0.08), transparent 35%),
+    radial-gradient(circle at 50% 50%, rgba(40, 90, 140, 0.08), transparent 50%),
+    #090c11;
 }
 
-.neural-core-info {
-  position: absolute;
-  bottom: 1.25rem;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  color: var(--lk-muted);
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  opacity: 0.7;
-  pointer-events: none;
-  z-index: 50;
-  white-space: nowrap;
-}
-
-.neural-core-loading {
-  position: absolute;
-  inset: 0;
-  display: none;
+.hero {
+  min-height: 100vh;
+  padding: clamp(20px, 5vh, 56px) 20px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  background:
-    radial-gradient(
-      circle at 50% 50%,
-      rgba(17, 22, 28, 0.6),
-      rgba(9, 12, 17, 0.95)
-    );
-  z-index: 20;
-}
-
-.loading-spinner {
-  width: 54px;
-  height: 54px;
-  border: 3px solid rgba(108, 234, 217, 0.25);
-  border-top-color: var(--lk-accent);
-  border-radius: 50%;
-  box-shadow:
-    0 0 20px rgba(108, 234, 217, 0.25),
-    0 0 60px rgba(108, 234, 217, 0.1);
-  animation: lk-spin 1s linear infinite;
-}
-
-@keyframes lk-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.neural-core-fallback {
-  display: none;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 1.5rem;
-  max-width: 420px;
+  gap: clamp(10px, 2vh, 22px);
   text-align: center;
-  border-radius: 14px;
-  background: rgba(17, 22, 28, 0.9);
-  border: 1px solid rgba(108, 234, 217, 0.2);
+}
+
+.site-title {
+  margin: 0;
+  margin-bottom: 6px;
+  letter-spacing: 0.28em;
+  font-size: clamp(2.2rem, 4.5vw, 3rem);
+  line-height: 1;
+  color: #e9feff;
+  text-shadow:
+    0 0 12px rgba(108, 234, 217, 0.4),
+    0 0 28px rgba(108, 234, 217, 0.18);
+}
+
+.lede {
+  margin: 0;
+  font-size: clamp(0.95rem, 1.25vw, 1.05rem);
+  color: var(--muted);
+  opacity: 0.95;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.globe-wrapper {
+  position: relative;
+  width: var(--globe-size);
+  height: var(--globe-size);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -8px;
+}
+
+.globe-canvas {
+  position: absolute;
+  inset: 0;
+  width: var(--globe-size);
+  height: var(--globe-size);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.globe {
+  position: relative;
+  width: var(--globe-size);
+  height: var(--globe-size);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 35%, rgba(100, 150, 255, 0.16) 0%, rgba(50, 100, 200, 0.08) 30%, rgba(20, 50, 120, 0.05) 60%, rgba(10, 30, 80, 0.02) 100%);
   box-shadow:
-    0 12px 40px rgba(0, 0, 0, 0.4),
-    0 0 40px rgba(108, 234, 217, 0.08);
-  z-index: 100;
+    inset -25px -25px 50px rgba(0, 0, 0, 0.3),
+    inset 15px 15px 40px rgba(255, 255, 255, 0.08),
+    0 0 60px rgba(100, 150, 255, 0.12),
+    0 0 100px rgba(50, 100, 200, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  z-index: 1;
 }
 
-.neural-core-fallback.active {
-  display: block;
+.globe::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 45px,
+      rgba(255, 255, 255, 0.03) 45px,
+      rgba(255, 255, 255, 0.03) 47px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 45px,
+      rgba(255, 255, 255, 0.03) 45px,
+      rgba(255, 255, 255, 0.03) 47px
+    );
+  border-radius: 50%;
+  pointer-events: none;
 }
 
-.neural-core-fallback h2 {
-  color: var(--lk-accent);
-  margin: 0 0 0.8rem;
-  font-size: 1.3rem;
+.globe::after {
+  content: "";
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  width: 90%;
+  height: 90%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+  pointer-events: none;
 }
 
-.neural-core-fallback p {
-  color: var(--lk-muted);
-  font-size: 0.95rem;
-  line-height: 1.6;
-  margin: 0.35rem 0;
+.globe-wrapper.canvas-active .globe {
+  opacity: 0.18;
+  transition: opacity 0.5s ease-out;
 }
 
-@media (max-width: 640px) {
-  .neural-core-info {
-    font-size: 0.65rem;
-    bottom: 0.9rem;
-    letter-spacing: 0.12em;
+@media (max-width: 900px) {
+  :root {
+    --globe-size: 360px;
   }
 
-  .neural-core-fallback {
-    width: calc(100vw - 32px);
-    max-width: none;
-    padding: 1.2rem;
+  .site-title {
+    font-size: clamp(2rem, 6.5vw, 2.6rem);
+    letter-spacing: 0.22em;
+  }
+}
+
+@media (max-width: 520px) {
+  :root {
+    --globe-size: 260px;
   }
 
-  .loading-spinner {
-    width: 42px;
-    height: 42px;
+  .site-title {
+    font-size: 1.6rem;
+    letter-spacing: 0.2em;
+  }
+
+  .hero {
+    padding: 22px 14px;
+    gap: 12px;
   }
 }

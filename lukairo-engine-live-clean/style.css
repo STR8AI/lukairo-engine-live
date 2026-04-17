@@ -1,166 +1,137 @@
-/* ------- Hero spacing polish --------
-   Paste at end of cf-pages/style.css
-   Adjust the numbers if you want it looser/tighter
---------------------------------------*/
+/* --- LUKAIRO Neural Core polish for current index.html --- */
 
-.hero {
-  /* more predictable vertical centering with room for header/footer */
-  min-height: 72vh;                 /* slightly taller than before for balance */
-  padding: clamp(20px, 5vh, 56px) 20px; /* responsive padding */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(10px, 2vh, 22px);      /* tighter gap between title, lede, globe */
+:root {
+  --lk-bg: #090c11;
+  --lk-text: #E8EAED;
+  --lk-muted: #9AA0A6;
+  --lk-accent: #6CEAD9;
+}
+
+/* page */
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--lk-bg);
+  color: var(--lk-text);
+  overflow: hidden;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+#lukairo-engine,
+#neural-core-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+/* make the canvas fill cleanly */
+#neural-core-container canvas,
+canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* subtle vignette / cinematic finish */
+#neural-core-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  background:
+    radial-gradient(circle at 50% 50%, transparent 35%, rgba(9,12,17,0.08) 62%, rgba(9,12,17,0.28) 100%);
+}
+
+/* info label */
+.neural-core-info {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
   text-align: center;
+  color: var(--lk-muted);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  pointer-events: none;
+  opacity: 0.7;
+  z-index: 50;
+  white-space: nowrap;
 }
 
-/* Title adjustments: reduce vertical space and fine-tune size */
-.site-title {
-  margin: 0;
-  margin-bottom: 6px;               /* less space under title */
-  letter-spacing: .28em;            /* slightly tighter than before */
-  font-size: clamp(2.2rem, 4.5vw, 3rem);
-  line-height: 1;
-  transform: translateY(-2%);       /* lift the title a touch so it visually overlaps globe center */
-}
-
-/* Tagline (lede) — smaller, closer to title */
-.lede {
-  margin: 0;
-  font-size: clamp(0.95rem, 1.25vw, 1.05rem);
-  color: var(--muted);
-  margin-bottom: 0;                 /* keep compact */
-  opacity: 0.95;
-}
-
-/* Globe wrapper - push globe just a little lower so title sits on it */
-.globe-wrapper {
-  position: relative; /* Positioning context for absolute canvas */
-  perspective: 1200px;
-  display: flex;
+/* loading overlay */
+.neural-core-loading {
+  position: absolute;
+  inset: 0;
+  display: none;
   align-items: center;
   justify-content: center;
-  margin-top: -8px;                 /* nudge globe up a touch (so title feels embedded) */
+  background:
+    radial-gradient(circle at 50% 50%, rgba(17,22,28,0.55), rgba(9,12,17,0.92));
+  z-index: 20;
 }
 
-/* Globe sizing tune: slightly smaller on narrow screens for better balance */
-:root { --globe-size: 420px; } /* keep default */
-
-@media (max-width: 900px){
-  :root { --globe-size: 360px; }
-  .site-title { font-size: clamp(2rem, 6.5vw, 2.6rem); letter-spacing: .22em; transform: translateY(-1%); }
-  .hero { min-height: 66vh; gap: 18px; }
+.loading-spinner {
+  width: 54px;
+  height: 54px;
+  border: 3px solid rgba(108, 234, 217, 0.22);
+  border-top-color: var(--lk-accent);
+  border-radius: 50%;
+  box-shadow: 0 0 24px rgba(108, 234, 217, 0.18);
+  animation: lk-spin 1s linear infinite;
 }
 
-@media (max-width: 520px){
-  :root { --globe-size: 260px; }
-  .site-title { font-size: 1.6rem; letter-spacing: .20em; }
-  .hero { min-height: 62vh; padding: 22px 14px; gap: 12px; }
-  .site-title { transform: translateY(0); } /* remove lift on very small screens */
+@keyframes lk-spin {
+  to { transform: rotate(360deg); }
 }
 
-/* ------- Globe canvas styles --------
-   Canvas element for JS-driven animation
------------------------------------------*/
-.globe-canvas {
+/* fallback */
+.neural-core-fallback {
+  display: none;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: var(--globe-size, 420px);
-  height: var(--globe-size, 420px);
-  pointer-events: none;
-  z-index: 10;
+  text-align: center;
+  padding: 1.5rem;
+  background: rgba(17, 22, 28, 0.88);
+  border: 1px solid rgba(108, 234, 217, 0.18);
+  border-radius: 14px;
+  max-width: 420px;
+  z-index: 100;
+  box-shadow:
+    0 12px 40px rgba(0,0,0,0.35),
+    0 0 40px rgba(108, 234, 217, 0.08);
 }
 
-/* ------- Globe fallback styles --------
-   Polished CSS-only globe for when canvas
-   animation fails or loads slowly
------------------------------------------*/
-.globe {
-  position: relative;
-  width: var(--globe-size, 420px);
-  height: var(--globe-size, 420px);
-  border-radius: 50%;
-  background: radial-gradient(
-    circle at 35% 35%,
-    rgba(100, 150, 255, 0.15) 0%,
-    rgba(50, 100, 200, 0.08) 30%,
-    rgba(20, 50, 120, 0.05) 60%,
-    rgba(10, 30, 80, 0.02) 100%
-  );
-  box-shadow: 
-    inset -25px -25px 50px rgba(0, 0, 0, 0.3),
-    inset 15px 15px 40px rgba(255, 255, 255, 0.08),
-    0 0 60px rgba(100, 150, 255, 0.12),
-    0 0 100px rgba(50, 100, 200, 0.08);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  overflow: hidden;
-  z-index: 1;
+.neural-core-fallback.active {
+  display: block;
 }
 
-/* Rotating animation for the globe */
-@keyframes rotate-globe {
-  from {
-    transform: rotate(0deg);
+.neural-core-fallback h2 {
+  color: var(--lk-accent);
+  margin: 0 0 0.8rem;
+  font-size: 1.35rem;
+}
+
+.neural-core-fallback p {
+  color: var(--lk-muted);
+  line-height: 1.6;
+  margin: 0.35rem 0;
+}
+
+/* mobile */
+@media (max-width: 640px) {
+  .neural-core-info {
+    font-size: 0.68rem;
+    bottom: 0.9rem;
+    letter-spacing: 0.12em;
   }
-  to {
-    transform: rotate(360deg);
+
+  .neural-core-fallback {
+    width: calc(100vw - 32px);
+    max-width: none;
+    padding: 1.1rem;
   }
-}
-
-/* Rotating animation for the globe - reverse direction for clockwise rotation */
-.globe.rotate-right {
-  animation: rotate-globe 40s linear infinite reverse;
-}
-
-/* Meridian lines overlay */
-.globe::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: 
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 45px,
-      rgba(255, 255, 255, 0.03) 45px,
-      rgba(255, 255, 255, 0.03) 47px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 45px,
-      rgba(255, 255, 255, 0.03) 45px,
-      rgba(255, 255, 255, 0.03) 47px
-    );
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-/* Subtle glow effect */
-.globe::after {
-  content: '';
-  position: absolute;
-  top: 5%;
-  left: 5%;
-  width: 90%;
-  height: 90%;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle at 30% 30%,
-    rgba(255, 255, 255, 0.1) 0%,
-    transparent 50%
-  );
-  pointer-events: none;
-}
-
-/* Hide CSS globe when canvas successfully loads and renders */
-.globe-wrapper.canvas-active .globe {
-  opacity: 0;
-  transition: opacity 0.5s ease-out;
 }

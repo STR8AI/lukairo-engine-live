@@ -3,66 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="LUKAIRO Engine - Neural Core Visualization and AI Platform" />
+  <meta name="description" content="LUKAIRO Engine" />
   <title>LUKAIRO Engine</title>
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-  <section id="lukairo-engine">
-    <div id="neural-core-container" role="main" aria-label="LUKAIRO Neural Core Visualization">
-      <div class="neural-core-loading" id="loading-overlay">
-        <div class="loading-spinner"></div>
-      </div>
+  <main class="hero">
+    <h1 class="site-title">LUKAIRO</h1>
+    <p class="lede">Neural Core Engine</p>
 
-      <div class="neural-core-fallback" id="fallback-message">
-        <h2>WebGL Not Available</h2>
-        <p>Your browser doesn't support WebGL or it's disabled.</p>
-        <p>Please enable WebGL to view the Neural Core visualization.</p>
-      </div>
-
-      <div class="neural-core-info">
-        LUKAIRO Neural Core • 3D Visualization
-      </div>
+    <div class="globe-wrapper">
+      <canvas id="globe" class="globe-canvas" aria-label="Rotating globe"></canvas>
+      <div class="globe"></div>
     </div>
-  </section>
+  </main>
 
-  <div id="root"></div>
-
-  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
-  <script src="./src/scripts/neural-core.js"></script>
-  <script>
-    (function () {
-      const loadingOverlay = document.getElementById("loading-overlay");
-      const fallback = document.getElementById("fallback-message");
-
-      if (loadingOverlay) {
-        loadingOverlay.style.display = "flex";
-      }
-
-      if (window.NeuralCore && window.THREE) {
-        const neuralCore = new window.NeuralCore({
-          containerId: "neural-core-container",
-          texturePath: "./images/"
-        });
-
-        neuralCore.init();
-        window.lukairoCoreInstance = neuralCore;
-
-        setTimeout(() => {
-          if (loadingOverlay) {
-            loadingOverlay.style.display = "none";
-          }
-        }, 1500);
-      } else {
-        console.error("NeuralCore failed to load");
-        if (loadingOverlay) {
-          loadingOverlay.style.display = "none";
-        }
-        if (fallback) {
-          fallback.classList.add("active");
-        }
-      }
-    })();
-  </script>
+  <script src="./main.js"></script>
 </body>
 </html>

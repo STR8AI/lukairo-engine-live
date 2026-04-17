@@ -1,54 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LUKAIRO Engine</title>
-  <link rel="stylesheet" href="./style.css" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="./style.css">
+
   <style>
     body {
       margin: 0;
       background: #090c11;
       color: #E8EAED;
-      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
     }
 
-    .site-header {
+    #neural-core-container {
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .header {
       position: absolute;
       top: 20px;
       left: 20px;
       z-index: 10;
+      color: #6CEAD9;
     }
 
-    .site-header h1 {
+    .header h1 {
       margin: 0;
-      color: #6CEAD9;
       font-size: 3rem;
-      line-height: 1;
     }
 
-    .site-header p {
-      margin: 8px 0 0;
-      color: #6CEAD9;
-      font-size: 1.5rem;
-    }
-
-    #scene {
-      display: block;
-      width: 100vw;
-      height: 100vh;
-      background: #090c11;
+    .header p {
+      margin: 0;
+      font-size: 1.2rem;
     }
   </style>
 </head>
+
 <body>
-  <div class="site-header">
-    <h1>LUKAIRO</h1>
-    <p>Neural Core Engine</p>
-  </div>
 
-  <canvas id="scene"></canvas>
+<div class="header">
+  <h1>LUKAIRO</h1>
+  <p>Neural Core Engine</p>
+</div>
 
-  <script type="module" src="./engine.js"></script>
+<div id="neural-core-container"></div>
+
+<!-- Three.js -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+
+<!-- YOUR ENGINE -->
+<script src="./neural-core.js"></script>
+
+<!-- INIT -->
+<script>
+setTimeout(() => {
+  if (window.NeuralCore && window.THREE) {
+    const core = new window.NeuralCore({
+      containerId: "neural-core-container",
+      texturePath: "./images/"   // IMPORTANT
+    });
+
+    core.init();
+  } else {
+    console.error("NeuralCore failed to load");
+  }
+}, 1000);
+</script>
+
 </body>
 </html>

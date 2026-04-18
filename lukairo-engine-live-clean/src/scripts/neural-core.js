@@ -14,6 +14,10 @@
       this.animationId = null;
       this.coreGroup = null;
       this.starfield = null;
+      this.halo = null;
+      this.equatorRing = null;
+      this.ringA = null;
+      this.ringB = null;
     }
 
     init() {
@@ -26,8 +30,8 @@
         throw new Error(`Container #${this.config.containerId} not found`);
       }
 
-      const width = this.container.clientWidth || window.innerWidth;
-      const height = this.container.clientHeight || window.innerHeight;
+      const width = this.container.clientWidth || window.innerWidth || 1;
+      const height = this.container.clientHeight || window.innerHeight || 1;
 
       this.scene = new THREE.Scene();
       this.scene.fog = new THREE.Fog(0x090c11, 10, 60);
@@ -35,7 +39,11 @@
       this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
       this.camera.position.set(0, 0, 7);
 
-      this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      this.renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true,
+        powerPreference: "high-performance"
+      });
       this.renderer.setSize(width, height);
       this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
       this.renderer.setClearColor(0x090c11, 1);
@@ -79,10 +87,7 @@
         );
       }
 
-      geometry.setAttribute(
-        "position",
-        new THREE.Float32BufferAttribute(vertices, 3)
-      );
+      geometry.setAttribute("position", new THREE.Float32BufferAttribute(vertices, 3));
 
       const material = new THREE.PointsMaterial({
         color: 0x6cead9,
@@ -162,7 +167,7 @@
       );
       this.coreGroup.add(innerSphere);
 
-      const halo = new THREE.Mesh(
+      this.halo = new THREE.Mesh(
         new THREE.TorusGeometry(0.35, 0.018, 24, 128),
         new THREE.MeshBasicMaterial({
           color: 0x6cead9,
@@ -170,32 +175,27 @@
           opacity: 0.95,
         })
       );
-      halo.rotation.x = Math.PI / 2;
-      this.coreGroup.add(halo);
-      this.halo = halo;
+      this.halo.rotation.x = Math.PI / 2;
+      this.coreGroup.add(this.halo);
 
-      const equatorRing = this.createRing(2.0, 0x7cf3e6, 0.9);
-      equatorRing.rotation.x = Math.PI * 0.5;
-      this.coreGroup.add(equatorRing);
-      this.equatorRing = equatorRing;
+      this.equatorRing = this.createRing(2.0, 0x7cf3e6, 0.9);
+      this.equatorRing.rotation.x = Math.PI * 0.5;
+      this.coreGroup.add(this.equatorRing);
 
-      const ringA = this.createRing(1.78, 0x7ed8ff, 0.6);
-      ringA.rotation.x = 0.95;
-      ringA.rotation.y = 0.3;
-      this.coreGroup.add(ringA);
-      this.ringA = ringA;
+      this.ringA = this.createRing(1.78, 0x7ed8ff, 0.6);
+      this.ringA.rotation.x = 0.95;
+      this.ringA.rotation.y = 0.3;
+      this.coreGroup.add(this.ringA);
 
-      const ringB = this.createRing(1.6, 0x6cead9, 0.55);
-      ringB.rotation.x = 2.2;
-      ringB.rotation.z = 0.4;
-      this.coreGroup.add(ringB);
-      this.ringB = ringB;
+      this.ringB = this.createRing(1.6, 0x6cead9, 0.55);
+      this.ringB.rotation.x = 2.2;
+      this.ringB.rotation.z = 0.4;
+      this.coreGroup.add(this.ringB);
 
       const ringC = this.createRing(1.36, 0x8ab4f8, 0.45);
       ringC.rotation.y = 1.1;
       ringC.rotation.z = 1.2;
       this.coreGroup.add(ringC);
-      this.ringC = ringC;
 
       this.createNodes(10, 1.55).forEach((node) => this.coreGroup.add(node));
     }
@@ -211,8 +211,8 @@
 
     onResize() {
       if (!this.camera || !this.renderer || !this.container) return;
-      const width = this.container.clientWidth || window.innerWidth;
-      const height = this.container.clientHeight || window.innerHeight;
+      const width = this.container.clientWidth || window.innerWidth || 1;
+      const height = this.container.clientHeight || window.innerHeight || 1;
       this.camera.aspect = width / height;
       this.camera.updateProjectionMatrix();
       this.renderer.setSize(width, height);
@@ -220,6 +220,8 @@
 
     animate() {
       this.animationId = requestAnimationFrame(() => this.animate());
+
+      if (!this.renderer || !this.scene || !this.camera) return;
 
       if (this.coreGroup) {
         this.coreGroup.rotation.y += 0.0025;

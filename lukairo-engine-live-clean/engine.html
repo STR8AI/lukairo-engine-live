@@ -1,3 +1,4 @@
+<!-- file: lukairo-engine-live-clean/engine.html -->
 <!doctype html>
 <html lang="en">
   <head>
@@ -5,15 +6,15 @@
     <title>LUKAIRO Engine</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Load shared site styles -->
-    <link rel="stylesheet" href="lukairo-main.css" />
+    <!-- was: lukairo-main.css -->
+    <link rel="stylesheet" href="./style.css" />
 
     <style>
       body {
         margin: 0;
         padding: 0;
         background: #0b0b0c;
-        font-family: 'Inter', sans-serif;
+        font-family: Inter, sans-serif;
         color: #fff;
         display: flex;
         height: 100vh;
@@ -123,23 +124,19 @@
       }
     </style>
   </head>
-
   <body>
-    <!-- SIDEBAR NAVIGATION -->
     <div class="sidebar">
       <div class="logo">LUKAIRO ENGINE</div>
-
       <div class="nav">
-        <a href="engine.html">Dashboard</a>
+        <a href="./engine.html">Dashboard</a>
         <a href="#">Qualification Engine</a>
         <a href="#">Workflows</a>
         <a href="#">Integrations</a>
         <a href="#">Analytics</a>
-        <a href="index.html">← Back to Website</a>
+        <a href="./index.html">← Back to Website</a>
       </div>
     </div>
 
-    <!-- MAIN PANEL -->
     <div class="main">
       <div class="topbar">
         <div class="topbar-title">Dashboard</div>
@@ -149,9 +146,9 @@
         <div class="card">
           <h2>Welcome to the LUKAIRO Engine</h2>
           <p>
-            This is the command center for your automated service infrastructure. From here, you can
-            control qualification flows, onboarding, workflows, automations, and AI-powered
-            operations.
+            This is the command center for your automated service infrastructure.
+            From here, you can control qualification flows, onboarding,
+            workflows, automations, and AI-powered operations.
           </p>
           <a href="#" class="btn">Get Started</a>
         </div>
@@ -168,7 +165,6 @@
       </div>
     </div>
 
-    <!-- Load shared JS -->
-    <script src="main.js"></script>
+    <!-- intentionally no JS here until engine modules actually exist -->
   </body>
 </html>

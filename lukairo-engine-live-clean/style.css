@@ -1,4 +1,133 @@
 :root {
+  --lk-bg: #090c11;
+  --lk-surface: rgba(17, 22, 28, 0.9);
+  --lk-text: #e8eaed;
+  --lk-muted: #9aa0a6;
+  --lk-accent: #6cead9;
+  --lk-accent-soft: rgba(108, 234, 217, 0.18);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(108, 234, 217, 0.04), transparent 42%),
+    linear-gradient(180deg, #081019 0%, var(--lk-bg) 100%);
+  color: var(--lk-text);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  overflow: hidden;
+}
+
+body {
+  position: relative;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at center, rgba(0, 255, 200, 0.045), transparent 68%);
+  z-index: 0;
+}
+
+#lukairo-engine {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  min-height: 100svh;
+  overflow: hidden;
+  z-index: 1;
+}
+
+#neural-core-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+}
+
+#neural-core-container canvas,
+canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+#neural-core-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      transparent 28%,
+      rgba(9, 12, 17, 0.05) 58%,
+      rgba(9, 12, 17, 0.24) 78%,
+      rgba(9, 12, 17, 0.42) 100%
+    );
+}
+
+.neural-core-info {
+  position: absolute;
+  left: 50%;
+  bottom: 1.25rem;
+  transform: translateX(-50%);
+  z-index: 50;
+  white-space: nowrap;
+  pointer-events: none;
+  text-align: center;
+  color: var(--lk-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  opacity: 0.72;
+  text-shadow: 0 0 18px rgba(108, 234, 217, 0.1);
+}
+
+.neural-core-loading {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 50%, rgba(17, 22, 28, 0.55), rgba(9, 12, 17, 0.96));
+  z-index: 20;
+}
+
+.neural-core-loading.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.loading-spinner {
+  width: 54px;
+  height: 54px;
+  border: 3px solid rgba(108, 234, 217, 0.22);
+  border-top-color: var(--lk-accent);
+  border-radius: 50%;
+  box-shadow:
+    0 0 20px rgba(108, 234, 217, 0.22),
+    0 0 60px rgba(108, 234, 217, 0.08);
+  animation: lk-spin 1s linear infinite;
+}
+
+@keyframes lk-spin {
+  to {
+    transform: rotate(360deg);
   }
 }
 
@@ -36,21 +165,4 @@
   color: var(--lk-muted);
   font-size: 0.95rem;
   line-height: 1.6;
-}
-
-@media (max-width: 640px) {
-  .neural-core-info {
-    bottom: 0.9rem;
-    font-size: 0.65rem;
-    letter-spacing: 0.12em;
-  }
-
-  .neural-core-fallback {
-    padding: 1.2rem;
-  }
-
-  .loading-spinner {
-    width: 42px;
-    height: 42px;
-  }
 }

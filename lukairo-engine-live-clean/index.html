@@ -33,20 +33,15 @@
       const loadingOverlay = document.getElementById("loading-overlay");
       const fallback = document.getElementById("fallback-message");
 
-      if (loadingOverlay) {
-        loadingOverlay.style.display = "flex";
-      }
+      if (loadingOverlay) loadingOverlay.style.display = "flex";
 
       if (window.NeuralCore && window.THREE) {
         const neuralCore = new window.NeuralCore({
-          containerId: "neural-core-container",
-          texturePath: "./images/"
+          containerId: "neural-core-container"
         });
-
         neuralCore.init();
         window.lukairoCoreInstance = neuralCore;
       } else {
-        console.error("NeuralCore failed to load");
         if (loadingOverlay) loadingOverlay.style.display = "none";
         if (fallback) fallback.classList.add("active");
       }

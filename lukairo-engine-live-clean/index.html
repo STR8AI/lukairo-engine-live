@@ -36,17 +36,17 @@
       if (loadingOverlay) loadingOverlay.style.display = "flex";
 
       try {
-        if (window.NeuralCore && window.THREE) {
-          const neuralCore = new window.NeuralCore({
-            containerId: "neural-core-container"
-          });
-          neuralCore.init();
-          window.lukairoCoreInstance = neuralCore;
-        } else {
-          throw new Error("NeuralCore or Three.js missing");
-        }
+        console.log("THREE loaded:", !!window.THREE);
+        console.log("NeuralCore loaded:", !!window.NeuralCore);
+
+        const neuralCore = new window.NeuralCore({
+          containerId: "neural-core-container"
+        });
+
+        neuralCore.init();
+        window.lukairoCoreInstance = neuralCore;
       } catch (error) {
-        console.error(error);
+        console.error("Neural Core init failed:", error);
         if (loadingOverlay) loadingOverlay.style.display = "none";
         if (fallback) fallback.classList.add("active");
       }

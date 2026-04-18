@@ -15,9 +15,8 @@
       </div>
 
       <div class="neural-core-fallback" id="fallback-message">
-        <h2>WebGL Not Available</h2>
-        <p>Your browser doesn't support WebGL or it's disabled.</p>
-        <p>Please enable WebGL to view the Neural Core visualization.</p>
+        <h2 id="fallback-title">Initialization Failed</h2>
+        <p id="fallback-text">Unknown error.</p>
       </div>
 
       <div class="neural-core-info">
@@ -32,12 +31,27 @@
     (function () {
       const loadingOverlay = document.getElementById("loading-overlay");
       const fallback = document.getElementById("fallback-message");
+      const fallbackTitle = document.getElementById("fallback-title");
+      const fallbackText = document.getElementById("fallback-text");
+
+      function showError(title, message) {
+        console.error(title + ":", message);
+        if (loadingOverlay) loadingOverlay.style.display = "none";
+        if (fallbackTitle) fallbackTitle.textContent = title;
+        if (fallbackText) fallbackText.textContent = String(message);
+        if (fallback) fallback.classList.add("active");
+      }
 
       if (loadingOverlay) loadingOverlay.style.display = "flex";
 
       try {
-        console.log("THREE loaded:", !!window.THREE);
-        console.log("NeuralCore loaded:", !!window.NeuralCore);
+        if (!window.THREE) {
+          throw new Error("three.min.js did not load");
+        }
+
+        if (!window.NeuralCore) {
+          throw new Error("neural-core.js did not load");
+        }
 
         const neuralCore = new window.NeuralCore({
           containerId: "neural-core-container"
@@ -46,9 +60,7 @@
         neuralCore.init();
         window.lukairoCoreInstance = neuralCore;
       } catch (error) {
-        console.error("Neural Core init failed:", error);
-        if (loadingOverlay) loadingOverlay.style.display = "none";
-        if (fallback) fallback.classList.add("active");
+        showError("Initialization Failed", error && error.message ? error.message : error);
       }
     })();
   </script>

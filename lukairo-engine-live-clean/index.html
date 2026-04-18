@@ -35,13 +35,18 @@
 
       if (loadingOverlay) loadingOverlay.style.display = "flex";
 
-      if (window.NeuralCore && window.THREE) {
-        const neuralCore = new window.NeuralCore({
-          containerId: "neural-core-container"
-        });
-        neuralCore.init();
-        window.lukairoCoreInstance = neuralCore;
-      } else {
+      try {
+        if (window.NeuralCore && window.THREE) {
+          const neuralCore = new window.NeuralCore({
+            containerId: "neural-core-container"
+          });
+          neuralCore.init();
+          window.lukairoCoreInstance = neuralCore;
+        } else {
+          throw new Error("NeuralCore or Three.js missing");
+        }
+      } catch (error) {
+        console.error(error);
         if (loadingOverlay) loadingOverlay.style.display = "none";
         if (fallback) fallback.classList.add("active");
       }

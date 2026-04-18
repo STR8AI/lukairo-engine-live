@@ -15,9 +15,9 @@
       globe: "lukairo_globe.png",
     },
     layers: {
-      gears: { radius: 1, speed: 0.003, reverse: false },
-      circuits: { radius: 1.5, speed: 0.002, reverse: true },
-      globe: { radius: 2, speed: 0.001, reverse: false },
+      gears: { radius: 1.0, speed: 0.003, reverse: false, opacity: 0.16 },
+      circuits: { radius: 1.5, speed: 0.002, reverse: true, opacity: 0.22 },
+      globe: { radius: 2.0, speed: 0.001, reverse: false, opacity: 0.96 },
     },
     starfield: {
       count: 1200,
@@ -45,6 +45,7 @@
       this.renderer = null;
       this.container = null;
       this.layers = {};
+      this.layerExtras = [];
       this.starfield = null;
       this.animationId = null;
       this.isPageVisible = true;
@@ -209,15 +210,15 @@
     }
 
     setupLighting() {
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.45);
       this.scene.add(ambientLight);
 
-      const pointLight1 = new THREE.PointLight(0x6cead9, 1, 100);
-      pointLight1.position.set(5, 5, 5);
+      const pointLight1 = new THREE.PointLight(0x6cead9, 1.2, 100);
+      pointLight1.position.set(5, 5, 6);
       this.scene.add(pointLight1);
 
-      const pointLight2 = new THREE.PointLight(0x8ab4f8, 0.8, 100);
-      pointLight2.position.set(-5, -5, 5);
+      const pointLight2 = new THREE.PointLight(0x8ab4f8, 0.9, 100);
+      pointLight2.position.set(-5, -4, 5);
       this.scene.add(pointLight2);
     }
 
@@ -244,9 +245,9 @@
 
       const material = new THREE.PointsMaterial({
         color: 0x6cead9,
-        size: 0.05,
+        size: 0.045,
         transparent: true,
-        opacity: 0.6,
+        opacity: 0.55,
       });
 
       this.starfield = new THREE.Points(geometry, material);
@@ -296,29 +297,61 @@
       });
     }
 
+    createGlobeOccluder(radius) {
+      const occluderGeometry = new THREE.SphereGeometry(radius - 0.04, 64, 64);
+      const occluderMaterial = new THREE.MeshBasicMaterial({
+        color: 0x0b1420,
+        transparent: true,
+        opacity: 0.88,
+        side: THREE.FrontSide,
+        depthWrite: true,
+      });
+
+      const occluderMesh = new THREE.Mesh(occluderGeometry, occluderMaterial);
+      occluderMesh.renderOrder = 1;
+
+      this.layerExtras.push(occluderMesh);
+      this.scene.add(occluderMesh);
+    }
+
     createLayer(name, texture) {
       const layerConfig = this.config.layers[name];
       const geometry = new THREE.SphereGeometry(layerConfig.radius, 64, 64);
 
+      if (texture) {
+        texture.colorSpace = THREE.SRGBColorSpace;
+        texture.wrapS = THREE.ClampToEdgeWrapping;
+        texture.wrapT = THREE.ClampToEdgeWrapping;
+        texture.needsUpdate = true;
+      }
+
       if (texture && name === "globe") {
         texture.wrapS = THREE.RepeatWrapping;
-        texture.wrapT = THREE.ClampToEdgeWrapping;
         texture.repeat.x = -1;
+        texture.center.set(0.5, 0.5);
         texture.needsUpdate = true;
+      }
+
+      if (name === "globe") {
+        this.createGlobeOccluder(layerConfig.radius);
       }
 
       const material = new THREE.MeshPhongMaterial({
         map: texture || null,
         transparent: true,
-        opacity: 0.7,
+        opacity: layerConfig.opacity ?? 0.7,
+        alphaTest: texture ? 0.08 : 0,
         side: THREE.FrontSide,
+        depthWrite: true,
         wireframe: !texture,
+        emissive: texture ? 0x163640 : 0x000000,
+        emissiveIntensity: texture ? 0.22 : 0,
       });
 
       const mesh = new THREE.Mesh(geometry, material);
 
       if (name === "globe") {
-        mesh.rotation.y = Math.PI;
+        mesh.renderOrder = 2;
       }
 
       mesh.userData = {
@@ -380,6 +413,10 @@
         layer.rotation.x += layer.userData.speed * 0.5 * direction;
       });
 
+      this.layerExtras.forEach((mesh) => {
+        mesh.rotation.y += 0.0006;
+      });
+
       if (this.starfield) {
         this.starfield.rotation.y += 0.0001;
       }
@@ -435,16 +472,35 @@
 
       this.layers = {};
 
+      this.layerExtras.forEach((mesh) => {
+        if (mesh.geometry) {
+          mesh.geometry.dispose();
+        }
+
+        if (mesh.material) {
+          mesh.material.dispose();
+        }
+
+        if (this.scene) {
+          this.scene.remove(mesh);
+        }
+      });
+
+      this.layerExtras = [];
+
       if (this.starfield) {
         if (this.starfield.geometry) {
           this.starfield.geometry.dispose();
         }
+
         if (this.starfield.material) {
           this.starfield.material.dispose();
         }
+
         if (this.scene) {
           this.scene.remove(this.starfield);
         }
+
         this.starfield = null;
       }
     }
